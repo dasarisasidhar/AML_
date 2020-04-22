@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AML\templates\home\home.html" />
-    <Content Include="AML\templates\home\test.html" />
+    <Content Include="AML\templates\home\model_details.html" />
     <Content Include="requirements.txt" />
     <Content Include="AML\static\content\bootstrap.css" />
     <Content Include="AML\static\content\bootstrap.min.css" />

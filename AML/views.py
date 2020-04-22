@@ -21,20 +21,12 @@ def file():
     #C:\Users\iad7kor\Desktop\sasi\repos\Automate-ML-Modeling\Demo Datasets\Fish-1.csv
     path = request.form
     cols = data.get_cols(path["file"])
-    return render_template('home/test.html',
-                           cols = cols)
-    #return render_template(
-    #    'home/home.html',
-    #    title='Home Page',
-    #    year=datetime.now().year,
-    #    cols = cols,
-    #    path = path
-    #)
-
-@app.route("/test", methods=['GET', 'POST'])
-def test():
-    select = request.form.get('comp_select')
-    return(str(select))
+    return render_template('home/model_details.html',
+                                   title='Home Page',
+                                    year=datetime.now().year,
+                                    cols = cols,
+                                    path = path
+                                )
 
 @app.route('/details', methods = ["POST"])
 def details():
@@ -42,6 +34,11 @@ def details():
     print(data)
     return data
 
+@app.route('/test')
+def chartTest():
+    lnprice=np.log(price)
+    plt.plot(lnprice)
+    return render_template('untitled1.html', name = plt.show())
 
 
 @app.route('/home')
