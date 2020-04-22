@@ -28,22 +28,24 @@ def file():
                                     path = path
                                 )
 
+@app.route("/test", methods=['GET', 'POST'])
+def test():
+    select = request.form.get('comp_select')
+    return(str(select))
+
 @app.route('/details', methods = ["POST"])
 def details():
     data = dict(request.form)
-    if(data["type"] == "Classification"):
-        metrix = data.classifier(data["label"])
-    elif(data["type"] == "Regression"):
-        metrix = data.regressor(data["label"])
-    return metrix
+    print(data)
+    return data
 
+#data = dict(request.form)
+#    if(data["type"] == "Classification"):
+#        metrix = data.classifier(data["label"])
+#    elif(data["type"] == "Regression"):
+#        metrix = data.regressor(data["label"])
+#    return data
 
-
-@app.route('/test_graph')
-def chartTest():
-    lnprice=np.log(price)
-    plt.plot(lnprice)
-    return render_template('untitled1.html', name = plt.show())
 
 
 @app.route('/home')
