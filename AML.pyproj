@@ -48,6 +48,7 @@
     <Folder Include="AML\templates\home\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AML\templates\home\display_results.html" />
     <Content Include="AML\templates\home\home.html" />
     <Content Include="AML\templates\home\model_details.html" />
     <Content Include="requirements.txt" />

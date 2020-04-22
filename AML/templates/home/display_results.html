@@ -1,0 +1,38 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">{{ col_names[0] }}</th>
+                    <th scope="col">{{ col_names[1] }}</th>
+                </tr>
+            </thead>
+            {% for i in metrix %}
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>{{ i[0] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
+
+</body>
+</html>
+
+{% endblock %}

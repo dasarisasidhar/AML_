@@ -1,25 +1,26 @@
 import pandas as pd
 import numpy as np
-from sklearn.metrics import r2_score,mean_squared_error
+from sklearn import metrics
+#from sklearn.metrics import classification_report
+#from sklearn.metrics import r2_score,mean_squared_error
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split 
 
-df = pd.DataFrame()
-
 def get_cols(path):
+    global df
     df = pd.read_csv(path)
     cols = list(df.columns.values)
     print(cols)
     return cols
 
-def train_test_split(df, label):
+def split_train_test(df, label):
     Features = df.loc[:, df.columns != label]
     labels =  df.loc[:, label]
     X_train, X_test, y_train, y_test = train_test_split(Features,
                                                         labels,
-                                                        test_size=0.2,
-                                                       random_state = 5)
+                                                        test_size = 0.20,
+                                                        random_state = 1)
     return (X_train, X_test, y_train, y_test)
 
 def regressor(label):
@@ -27,7 +28,7 @@ def regressor(label):
     metrix = []
     train_accuracy = []
     test_accuracy = []
-    X_train, X_test, y_train, y_test = train_test_split(df, label)
+    X_train, X_test, y_train, y_test = split_train_test(df, label)
     models.append(('LinearRegression', LinearRegression()))
     #models.append(('DecisionTreeRegressor', DecisionTreeRegressor()))
     #models.append(('RandomForestRegressor', RandomForestRegressor()))
@@ -40,19 +41,19 @@ def regressor(label):
             m = model
             m.fit(X_train, y_train)
             y_pred = m.predict(X_test)
-            r_square = r2_score(y_test,y_pred)
-            rmse = np.sqrt(mean_squared_error(y_test,y_pred))
+            r_square = metrics.r2_score(y_test,y_pred)
+            rmse = np.sqrt(metrics.mean_squared_error(y_test,y_pred))
             #print(name," ( r_square , rmse) is: ", r_square, rmse)
             metrix.append((name, r_square, rmse))
     return metrix
 
-def classifier():
+def classifier(label):
     models = []
     metrix = []
     c_report = []
     train_accuracy = []
     test_accuracy = []
-    X_train, X_test, y_train, y_test = train_test_split(df, label)
+    X_train, X_test, y_train, y_test = split_train_test(df, label)
     models.append(('LogisticRegression', LogisticRegression(solver='liblinear', multi_class='ovr')))
     #models.append(('LinearDiscriminantAnalysis', LinearDiscriminantAnalysis()))
     #models.append(('KNeighborsClassifier', KNeighborsClassifier()))
@@ -70,7 +71,7 @@ def classifier():
             y_pred = m.predict(X_test)
             train_acc = round(m.score(X_train, y_train) * 100, 2)
             test_acc = metrics.accuracy_score(y_test,y_pred) *100
-            c_report.append(classification_report(y_test, y_pred))
+            #c_report.append(metrics.classification_report(y_test, y_pred))
             #print(name," (train accuracy , test_accuracy) is: ", train_acc, test_acc)
             metrix.append([name, train_acc, test_acc])
     return metrix
