@@ -36,15 +36,11 @@ def test():
 @app.route('/details', methods = ["POST"])
 def details():
     data = dict(request.form)
-    print(data)
+    if(data["type"] == "classification"):
+        metrix = data.classifier(data["label"])
+    elif(data["type"] == "regression"):
+        metrix = data.regressor(data["label"])
     return data
-
-#data = dict(request.form)
-#    if(data["type"] == "Classification"):
-#        metrix = data.classifier(data["label"])
-#    elif(data["type"] == "Regression"):
-#        metrix = data.regressor(data["label"])
-#    return data
 
 
 
