@@ -27,6 +27,7 @@ def regressor(label):
     metrix = []
     train_accuracy = []
     test_accuracy = []
+    X_train, X_test, y_train, y_test = train_test_split(df, label)
     models.append(('LinearRegression', LinearRegression()))
     #models.append(('DecisionTreeRegressor', DecisionTreeRegressor()))
     #models.append(('RandomForestRegressor', RandomForestRegressor()))
@@ -51,6 +52,7 @@ def classifier():
     c_report = []
     train_accuracy = []
     test_accuracy = []
+    X_train, X_test, y_train, y_test = train_test_split(df, label)
     models.append(('LogisticRegression', LogisticRegression(solver='liblinear', multi_class='ovr')))
     #models.append(('LinearDiscriminantAnalysis', LinearDiscriminantAnalysis()))
     #models.append(('KNeighborsClassifier', KNeighborsClassifier()))

@@ -31,10 +31,15 @@ def file():
 @app.route('/details', methods = ["POST"])
 def details():
     data = dict(request.form)
-    print(data)
-    return data
+    if(data["type"] == "Classification"):
+        metrix = data.classifier(data["label"])
+    elif(data["type"] == "Regression"):
+        metrix = data.regressor(data["label"])
+    return metrix
 
-@app.route('/test')
+
+
+@app.route('/test_graph')
 def chartTest():
     lnprice=np.log(price)
     plt.plot(lnprice)
