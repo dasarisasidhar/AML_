@@ -1,0 +1,52 @@
+﻿{% extends "layout.html" %}
+
+{% block content %}
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h1>Welcome to Home page </h1>
+    <div>
+        <form class="form-inline" method="POST" action="/file" enctype="multipart/form-data">
+            <div class="form-group">
+                <input type="text" id="file" name='file' multiple='' placeholder="Please copy the file path" class="custom-file-input">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div> 
+        </form>
+    </div>
+    {% if cols %}
+    <div>
+        <form class="form-inline" method="POST" action="/details">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Preference</label>
+            <div class="form-group">
+                <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect">
+                    <option selected>Choose The Label</option>
+                    {% for col in cols %}
+                    <option id="label" name="label"value={{ col }}>{{ col }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <div>
+                    <select class="custom-select mb-2 mr-sm-2 mb-sm-0" id="inlineFormCustomSelect">
+                        <option selected>Choose Regression or Classification</option>
+                        <option id="type" name ="type"value="Regression">Regression</option>
+                        <option id="type" name ="type" value="Classification">Classification</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</body>
+</html>
+
+{% endblock %}
