@@ -11,9 +11,6 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import base64
-from io import BytesIO
-from matplotlib.figure import Figure
 
 @app.route('/')
 def home_page():
@@ -38,15 +35,28 @@ def file():
 def details():
     values = dict(request.form)
     metrix = ""
-    if(values["type"] == "Classification"):
+    if(values["model"] == "Classification"):
         col_names = ["train_accuracy", "test_accuracy"]
-        metrix = data.classifier(values["label"])
-        #results = dict()
-        #for i in metrix:
-        #    results["model"] = metrix
-
-    elif(values["type"] == "Regression"):
-        metrix = data.regressor(values["label"])
+        if(values["type"] == "Default"):
+            metrix = data.default_classifier_models(values["label"])
+            metrix.sort(key=lambda x: x[2])
+            metrix.reverse()
+        elif(values["type"] == "All_Models"):
+            metrix = data.all_classifier_models(values["label"])
+            metrix.sort(key=lambda x: x[2])
+            metrix.reverse()
+    elif(values["model"] == "Regression"):
+        col_names = ["R_SQUARE", "RMSE"]
+        if(values["type"] == "Default"):
+            metrix = data.default_regressor_models(values["label"])
+            metrix.sort(key=lambda x: x[1])
+            metrix.reverse()
+        elif(values["type"] == "All_Models"):
+            metrix = data.all_regressor_models(values["label"])
+            metrix.sort(key=lambda x: x[1])
+            metrix.reverse()
+    else:
+        error = "error"
     return render_template("home/display_results.html",
                            title='Model results',
                             year=datetime.now().year,
@@ -58,12 +68,11 @@ def details():
 def graph():
     fig = Figure()
     df = pd.read_csv("C:/Users/iad7kor/Desktop/sasi/repos/Automate-ML-Modeling/Demo Datasets/Fish-1.csv")
-    lnprice=np.log(df["Length1"])
-    plt.plot(lnprice)
-    buf = BytesIO()
-    fig.savefig(buf, format="png")
-    data = base64.b64encode(buf.getbuffer()).decode("ascii")
-    return f"<img src='data:image/png;base64,{data}'/>"
+    sns.countplot('Species',data=df)
+    sns.savefig('./static/images/new_plot.png')
+    return render_template('graphs/g1.html', 
+                           name = 'new_plot', 
+                           url ='/static/images/new_plot.png')
 #render_template('graphs/g1.html', name = plt.show())
 
 

@@ -43,6 +43,7 @@
     <Folder Include="AML\static\" />
     <Folder Include="AML\static\content\" />
     <Folder Include="AML\static\fonts\" />
+    <Folder Include="AML\static\images\" />
     <Folder Include="AML\static\scripts\" />
     <Folder Include="AML\templates\" />
     <Folder Include="AML\templates\home\" />
