@@ -36,7 +36,7 @@ def details():
     values = dict(request.form)
     metrix = ""
     if(values["model"] == "Classification"):
-        col_names = ["train_accuracy", "test_accuracy"]
+        col_names = ["train_accuracy", "test_accuracy", "j_index"]
         if(values["type"] == "Default"):
             metrix = data.default_classifier_models(values["label"])
             metrix.sort(key=lambda x: x[2])
@@ -46,7 +46,7 @@ def details():
             metrix.sort(key=lambda x: x[2])
             metrix.reverse()
     elif(values["model"] == "Regression"):
-        col_names = ["R_SQUARE", "RMSE"]
+        col_names = ["R_SQUARE", "RMSE", "VAR_SCORE", "MAX_ERROR"]
         if(values["type"] == "Default"):
             metrix = data.default_regressor_models(values["label"])
             metrix.sort(key=lambda x: x[1])

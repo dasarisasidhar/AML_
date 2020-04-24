@@ -157,6 +157,12 @@ from sklearn.mixture import BayesianGaussianMixture
 ##################################################################
 
 def get_cols(path):
+    """
+        i/p: file_path
+        o/p: column names
+
+        if gives the path returns the columns names
+    """
     global df
     df = pd.read_csv(path)
     cols = list(df.columns.values)
@@ -164,6 +170,11 @@ def get_cols(path):
     return cols
 
 def split_train_test(df, label):
+    """
+        i/p: data_frame, labels
+        o/p: splitted train test data of 80% train, 20% test
+
+    """
     Features = df.loc[:, df.columns != label]
     labels =  df.loc[:, label]
     X_train, X_test, y_train, y_test = train_test_split(Features,
@@ -173,6 +184,11 @@ def split_train_test(df, label):
     return (X_train, X_test, y_train, y_test)
 
 def default_regressor_models(label):
+    """
+    i/p: label column name
+    o/p: model name, r_square, rmse
+    this is a function with minimal default regression models
+    """
     models = []
     metrix = []
     train_accuracy = []
@@ -195,16 +211,20 @@ def default_regressor_models(label):
             y_pred = m.predict(X_test)
             r_square = r2_score(y_test,y_pred)
             rmse = np.sqrt(mean_squared_error(y_test,y_pred))
-            #test_acc.append(r_square)
-            #names.append(name)            
-            #print(name," ( r_square , rmse) is: ", r_square, rmse)
-            metrix.append((name, r_square, rmse))
+            var_score = metrics.explained_variance_score(y_test,y_pred)
+            max_error = metrics.max_error(y_test, y_pred)
+            metrix.append((name, r_square, rmse, var_score, max_error))
         except:
             print("Excepton Occured  : ",name)
     return metrix
 
 
 def all_regressor_models(label):
+    """
+    i/p: label column name
+    o/p: model name, r_square, rmse
+    this is a function with all the regression models
+    """
     models = []
     metrix = []
     train_accuracy = []
@@ -277,11 +297,15 @@ def all_regressor_models(label):
 
 
 def default_classifier_models(label):
+    """
+    i/p: label column name
+    o/p: model name, train_acc, test_acc
+    this is a function with minimal default classification models
+    """
+
     models = []
     metrix = []
-    c_report = []
-    train_accuracy = []
-    test_accuracy = []
+
     X_train, X_test, y_train, y_test = split_train_test(df, label)
     models.append(('LogisticRegression', LogisticRegression(solver='liblinear', multi_class='ovr')))
     models.append(('LinearDiscriminantAnalysis', LinearDiscriminantAnalysis()))
@@ -294,8 +318,6 @@ def default_classifier_models(label):
     models.append(('XGB', XGBClassifier()))
     models.append(('SGD', SGDClassifier()))
     models.append(('Perceptron', Perceptron()))
-    test_accuracy= []
-    names = []
     for name, model in models:
         try:
             m = model
@@ -303,15 +325,23 @@ def default_classifier_models(label):
             y_pred = m.predict(X_test)
             train_acc = round(m.score(X_train, y_train) * 100, 2)
             test_acc = metrics.accuracy_score(y_test,y_pred) *100
-            #c_report.append(classification_report(y_test, y_pred))
-            #test_accuracy.append(test_acc)
-            names.append(name)
-            metrix.append([name, train_acc, test_acc])
-        except:
+            j_index = metrics.jaccard_similarity_score(y_test,y_pred)
+            #c_matrix = metrics.confusion_matrix(y_test,y_pred,labels=[1,0])
+            #f1_score = metrics.f1_score(y_test,y_pred)
+            #kappa_score = metrics.cohen_kappa_score(y_test,y_pred) *100
+            #log_loss = metrics.log_loss(y_test,y_pred)
+            metrix.append([name, train_acc, test_acc, j_index])
+        except Exception as e:
+            print(e)
             print("Exception Occurred  :",name)
     return metrix
 
 def all_classifier_models(label):
+    """
+    i/p: label column name
+    o/p: model name, r_square, rmse
+    this is a function with all the classification models
+    """
     models = []
     metrix = []
     c_report = []
